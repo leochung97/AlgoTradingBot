@@ -48,6 +48,32 @@ def main():
   
   # Prompt for ticker
   ticker = input("Enter stock ticker symbol: ").upper().strip()
+
+  print(f"\n--- {ticker} Stock Information ---\n")
+
+  # Fetch and display company information
+  print("Fetching company information...")
+  company_info = get_company_info(ticker)
+  
+  if company_info:
+    print(f"\n✓ {company_info['name']} ({ticker})")
+    print(f"Sector: {company_info['sector']} | Industry: {company_info['industry']}")
+    print("\nBusiness Summary:")
+    print("-----------------")
+    # Format summary text to wrap at ~80 characters
+    words = company_info['summary'].split()
+    line_length = 0
+    formatted_summary = ""
+    
+    for word in words:
+      if line_length + len(word) + 1 > 80:  # +1 for the space
+        formatted_summary += "\n" + word + " "
+        line_length = len(word) + 1
+      else:
+        formatted_summary += word + " "
+        line_length += len(word) + 1
+    
+    print(formatted_summary.strip())
   
   print(f"\nStreaming bid/ask prices for {ticker}. Press Ctrl+C to exit.\n")
   print(f"{'Time':<12} {'Bid':<10} {'Ask':<10} {'Spread':<10}")
